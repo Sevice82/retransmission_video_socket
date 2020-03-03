@@ -52,7 +52,7 @@ class ClientThread(threading.Thread):
             cv2.destroyAllWindows()
 
 # On acceuille le poste de commandement
-class PC_Thread(threading2.Thread):
+class PC_Thread(threading.Thread):
 
     def __init__(self, ip2, port2, clientsocket2):
         threading2.Thread.__init__(self)
@@ -69,8 +69,12 @@ tcpsock = tcpsock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcpsock.bind(("", 1111))
 
+# Ne fonctionne pas, on ne peut bind qu'un seul port visiblement même avec un autre tcpsocket
+
 tcpsock2.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcpsock2.bind(("", 1112))
+
+
 
 while True:
     tcpsock.listen(10)
