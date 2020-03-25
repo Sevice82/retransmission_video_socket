@@ -2,8 +2,10 @@ import socket
 from struct import pack
 import cv2
 
+
+
 HOST = "193.251.12.46"  # Standard loopback interface address (localhost)
-PORT = 1111
+PORT = 1112
 #PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 
 
@@ -14,7 +16,7 @@ def main():
         sock.connect((HOST, PORT))
         try:
             while True:
-                data = clientsocket.recv(20)
+                data = sock.recv(20)
                 if not data:
                     break
                 fps = unpack(">f", data[0:4])[0]
@@ -25,7 +27,7 @@ def main():
                 print(fps, width, height, size)
 
                 try:
-                    data = read_from_socket(clientsocket, size)
+                    data = read_from_socket(sock, size)
                 except ConnectionAbortedError:
                     break
                 finally:
@@ -43,6 +45,7 @@ def main():
             print("Client déconnecté...")
 
         except Exception as e:
+            import sys
             print("ERROR!", sys.exc_info())
         finally:
             cv2.destroyAllWindows()
